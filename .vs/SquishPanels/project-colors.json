@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "63aa1ad0-24fc-4ab7-82f4-a8bdc14c7dab": {
+      "ProjectGuid": "63aa1ad0-24fc-4ab7-82f4-a8bdc14c7dab",
+      "DisplayName": "SquishPanels",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}
