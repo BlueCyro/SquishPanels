@@ -28,7 +28,8 @@ namespace SquishPanels
         {
             static void Postfix(NeosPanel __instance)
             {
-                __instance.Slot.Scale_Field.TweenFromTo(new float3(1f, 0f, 1f), new float3(1f, 1f, 1f), 0.22f);
+                float3 LocalScl = __instance.Slot.LocalScale;
+                __instance.Slot.Scale_Field.TweenFromTo(new float3(LocalScl.x, 0f, LocalScl.z), LocalScl, 0.22f);
                 StaticAudioClip clip = __instance.Slot.AttachAudioClip(new Uri("neosdb:///bbdf36b8f036a5c30f7019d68c1fbdd4032bb1d4c9403bcb926bb21cd0ca3c1a.wav"));
                 AudioOutput audio = __instance.World.PlayOneShot(__instance.Slot.GlobalPosition, clip, 1f, true, 1f, __instance.Slot, AudioDistanceSpace.Local, false);
                 audio.DopplerLevel.Value = 0f;
