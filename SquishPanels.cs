@@ -54,7 +54,7 @@ public class ModClass : NeosMod
         {
             float3 Orig = __instance.Slot.LocalScale;
 
-            SyncListElementsEvent<SyncRef<IBounded>> CanvasListener = null;
+            SyncListElementsEvent<SyncRef<IBounded>>? CanvasListener = null;
             
             CanvasListener = (SyncElementList<SyncRef<IBounded>> list, int StartIndex, int count) => {
                 __instance.RunInUpdates(0, () => {
@@ -63,7 +63,7 @@ public class ModClass : NeosMod
                     
                     if (list[StartIndex].Target is Canvas)
                     {
-                        Canvas c = list[StartIndex].Target as Canvas;
+                        Canvas? c = list[StartIndex].Target as Canvas;
                         
                         if (c != null)
                         {
@@ -119,7 +119,7 @@ public class ModClass : NeosMod
 
             if (__instance.WhiteList[0] is Canvas)
             {
-                Canvas c = __instance.WhiteList[0] as Canvas;
+                Canvas? c = __instance.WhiteList[0] as Canvas;
 
                 if (c == null)
                     return true;
