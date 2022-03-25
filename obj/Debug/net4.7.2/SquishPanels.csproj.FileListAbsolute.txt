@@ -1,0 +1,15 @@
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\bin\Debug\net4.7.2\SquishPanels.dll
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\bin\Debug\net4.7.2\SquishPanels.pdb
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\bin\Debug\net4.7.2\0Harmony.dll
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\bin\Debug\net4.7.2\BaseX.dll
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\bin\Debug\net4.7.2\CodeX.dll
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\bin\Debug\net4.7.2\FrooxEngine.dll
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\bin\Debug\net4.7.2\NeosModLoader.dll
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\obj\Debug\net4.7.2\SquishPanels.csproj.AssemblyReference.cache
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\obj\Debug\net4.7.2\SquishPanels.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\obj\Debug\net4.7.2\SquishPanels.AssemblyInfoInputs.cache
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\obj\Debug\net4.7.2\SquishPanels.AssemblyInfo.cs
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\obj\Debug\net4.7.2\SquishPanels.csproj.CoreCompileInputs.cache
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\obj\Debug\net4.7.2\SquishPanels.csproj.CopyComplete
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\obj\Debug\net4.7.2\SquishPanels.dll
+C:\Users\Cyro\Documents\Coding Stuff\VSCode NML mod template\SquishPanels\obj\Debug\net4.7.2\SquishPanels.pdb
