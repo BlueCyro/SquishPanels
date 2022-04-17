@@ -13,31 +13,51 @@ using System.Collections.Generic;
 
 
 
-namespace YourNamespaceHere;
-public class ModClass : NeosMod
+namespace SquishPanels;
+public class SquishPanels : NeosMod
 {
     public override string Author => "Cyro";
     public override string Name => "SquishPanels";
-    public override string Version => "2.0.0";
+    public override string Version => "2.0.1";
 
     public static float DopplerLevel = 0.0f;
     public static AudioDistanceSpace DistSpace = AudioDistanceSpace.Global;
     public static string OpenSoundURL = "neosdb:///bbdf36b8f036a5c30f7019d68c1fbdd4032bb1d4c9403bcb926bb21cd0ca3c1a.wav";
     public static string CloseSoundURL = "neosdb:///e600ed8a6895325613b82a50fd2a8ea2ac64151adc5c48c913d33d584fdf75d5.wav";
     public static float TweenSpeed = 0.22f;
+    private static ModConfiguration Config;
+
+    [AutoRegisterConfigKey]
+    private static ModConfigurationKey<bool> Enabled = new ModConfigurationKey<bool>("Enabled", "Enables or disables the mod", () => true);
+
+    [AutoRegisterConfigKey]
+    private static ModConfigurationKey<bool> PlaySoundLocally = new ModConfigurationKey<bool>("PlaySoundLocally", "Makes the sound local for the mod user if true", () => false);
     public override void OnEngineInit()
     {
-        Harmony harmony = new Harmony("net.Author.ModClass");
+        Config = GetConfiguration();
+        
+        if (Config == null)
+            throw new NullReferenceException("Config is null");
+        
+        Config.Save(true);
+        Harmony harmony = new Harmony("net.Cyro.SquishPanels");
         harmony.PatchAll();
     }
 
     [HarmonyPatch(typeof(NeosPanel), "OnAttach")]
     public static class NeosPanel_OnAttach_Patch
     {
+
+        private static bool ShouldPlayLocally()
+        {
+            string? description = Engine.Current.WorldManager.FocusedWorld.Description;
+            return description != null && description.Contains("##SquishPanels.ForceLocal##") || Config.GetValue<bool>(PlaySoundLocally);
+        }
         public static void PlayOpenSound(NeosPanel __instance)
         {
             StaticAudioClip clip = __instance.World.GetSharedComponentOrCreate<StaticAudioClip>(OpenSoundURL, a => a.URL.Value = new Uri(OpenSoundURL));
-            AudioOutput audio = __instance.World.PlayOneShot(__instance.Slot.GlobalPosition, clip, 1f, true, 1f, __instance.Slot, AudioDistanceSpace.Local, false);
+            AudioOutput audio = __instance.World.PlayOneShot(__instance.Slot.GlobalPosition, clip, 1f, true, 1f, __instance.Slot, AudioDistanceSpace.Local, ShouldPlayLocally());
+            // UniLog.Log("Playing Open Sound " + (ShouldPlayLocally() ? "Locally" : "Globally").ToString());
             audio.DopplerLevel.Value = DopplerLevel;
             audio.DistanceSpace.Value = DistSpace;
         }
@@ -45,13 +65,17 @@ public class ModClass : NeosMod
         public static void PlayCloseSound(NeosPanel __instance)
         {
             StaticAudioClip clip = __instance.World.GetSharedComponentOrCreate<StaticAudioClip>(CloseSoundURL, a => a.URL.Value = new Uri(CloseSoundURL));
-            AudioOutput audio = __instance.World.PlayOneShot(__instance.Slot.GlobalPosition, clip, 1f, true, 1f, __instance.Slot, AudioDistanceSpace.Local, false);
+            AudioOutput audio = __instance.World.PlayOneShot(__instance.Slot.GlobalPosition, clip, 1f, true, 1f, __instance.Slot, AudioDistanceSpace.Local, ShouldPlayLocally());
+            // UniLog.Log("Playing Close Sound " + (ShouldPlayLocally() ? "Locally" : "Globally").ToString());
             audio.DopplerLevel.Value = DopplerLevel;
             audio.DistanceSpace.Value = DistSpace;
         }
 
-        public static void Prefix(NeosPanel __instance)
+        public static void Postfix(NeosPanel __instance)
         {
+            if (!Config.GetValue<bool>(Enabled))
+                return;
+            
             float3 Orig = __instance.Slot.LocalScale;
 
             SyncListElementsEvent<SyncRef<IBounded>>? CanvasListener = null;
@@ -104,6 +128,9 @@ public class ModClass : NeosMod
     {
         public static bool Prefix(NeosPanel __instance, NeosPanel.TitleButton button)
         {
+            if(!Config.GetValue<bool>(Enabled))
+                return true;
+            
             Action OnTweenDoneAction = delegate() { NeosPanel_OnClose_Snapshot.OnClose(__instance, button); };
 
             if (__instance.WhiteList.Count < 1)
