@@ -18,7 +18,7 @@ public class SquishPanels : NeosMod
 {
     public override string Author => "Cyro";
     public override string Name => "SquishPanels";
-    public override string Version => "2.0.1";
+    public override string Version => "2.0.2";
 
     public static float DopplerLevel = 0.0f;
     public static AudioDistanceSpace DistSpace = AudioDistanceSpace.Global;
