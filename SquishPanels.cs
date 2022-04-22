@@ -25,7 +25,7 @@ public class SquishPanels : NeosMod
     public static string OpenSoundURL = "neosdb:///bbdf36b8f036a5c30f7019d68c1fbdd4032bb1d4c9403bcb926bb21cd0ca3c1a.wav";
     public static string CloseSoundURL = "neosdb:///e600ed8a6895325613b82a50fd2a8ea2ac64151adc5c48c913d33d584fdf75d5.wav";
     public static float TweenSpeed = 0.22f;
-    private static ModConfiguration Config;
+    private static ModConfiguration? Config;
 
     [AutoRegisterConfigKey]
     private static ModConfigurationKey<bool> Enabled = new ModConfigurationKey<bool>("Enabled", "Enables or disables the mod", () => true);
@@ -51,7 +51,7 @@ public class SquishPanels : NeosMod
         private static bool ShouldPlayLocally()
         {
             string? description = Engine.Current.WorldManager.FocusedWorld.Description;
-            return description != null && description.Contains("##SquishPanels.ForceLocal##") || Config.GetValue<bool>(PlaySoundLocally);
+            return description != null && description.Contains("##SquishPanels.ForceLocal##") || Config!.GetValue<bool>(PlaySoundLocally);
         }
         public static void PlayOpenSound(NeosPanel __instance)
         {
@@ -73,7 +73,7 @@ public class SquishPanels : NeosMod
 
         public static void Postfix(NeosPanel __instance)
         {
-            if (!Config.GetValue<bool>(Enabled))
+            if (!Config!.GetValue<bool>(Enabled))
                 return;
             
             float3 Orig = __instance.Slot.LocalScale;
@@ -128,7 +128,7 @@ public class SquishPanels : NeosMod
     {
         public static bool Prefix(NeosPanel __instance, NeosPanel.TitleButton button)
         {
-            if(!Config.GetValue<bool>(Enabled))
+            if(!Config!.GetValue<bool>(Enabled))
                 return true;
             
             Action OnTweenDoneAction = delegate() { NeosPanel_OnClose_Snapshot.OnClose(__instance, button); };
