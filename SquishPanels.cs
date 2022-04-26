@@ -18,7 +18,7 @@ public class SquishPanels : NeosMod
 {
     public override string Author => "Cyro";
     public override string Name => "SquishPanels";
-    public override string Version => "2.0.3";
+    public override string Version => "2.0.4";
 
     public static float DopplerLevel = 0.0f;
     public static AudioDistanceSpace DistSpace = AudioDistanceSpace.Global;
@@ -36,6 +36,12 @@ public class SquishPanels : NeosMod
 
     [AutoRegisterConfigKey]
     private static ModConfigurationKey<string> CloseSoundURL = new ModConfigurationKey<string>("CloseSoundURL", "The URL of the sound to play when the panel closes", () => "neosdb:///e600ed8a6895325613b82a50fd2a8ea2ac64151adc5c48c913d33d584fdf75d5.wav");
+
+    [AutoRegisterConfigKey]
+    private static ModConfigurationKey<float> PanelOpenSpeed = new ModConfigurationKey<float>("PanelOpenSpeed", "The speed (in seconds) at which the panel opens", () => 0.22f);
+
+    [AutoRegisterConfigKey]
+    private static ModConfigurationKey<float> PanelCloseSpeed = new ModConfigurationKey<float>("PanelCloseSpeed", "The speed (in seconds) at which the panel closes", () => 0.22f);
     public override void OnEngineInit()
     {
         Config = GetConfiguration();
@@ -97,7 +103,7 @@ public class SquishPanels : NeosMod
                         {
                             float2 OrigSize = c.Size.Value;
                             PlayOpenSound(__instance);
-                            c.Size.TweenFrom(new float2(OrigSize.x, 0f), TweenSpeed);
+                            c.Size.TweenFrom(new float2(OrigSize.x, 0f), Config!.GetValue<float>(PanelOpenSpeed));
                         }
                     }
                     __instance.WhiteList.ElementsAdded -= CanvasListener;
@@ -108,7 +114,7 @@ public class SquishPanels : NeosMod
                 {
                     float3 OrigSize = __instance.Slot.LocalScale;
                     PlayOpenSound(__instance);
-                    __instance.Slot.Scale_Field.TweenFrom(new float3(OrigSize.x, 0f, OrigSize.z), TweenSpeed);
+                    __instance.Slot.Scale_Field.TweenFrom(new float3(OrigSize.x, 0f, OrigSize.z), Config!.GetValue<float>(PanelOpenSpeed));
                     __instance.WhiteList.ElementsAdded -= CanvasListener;
                 }
             });
@@ -141,7 +147,7 @@ public class SquishPanels : NeosMod
             {
                 float3 OrigSize = __instance.Slot.LocalScale;
                 NeosPanel_OnAttach_Patch.PlayCloseSound(__instance);
-                __instance.Slot.Scale_Field.TweenTo(new float3(OrigSize.x, 0f, OrigSize.z), TweenSpeed, default, null, OnTweenDoneAction);
+                __instance.Slot.Scale_Field.TweenTo(new float3(OrigSize.x, 0f, OrigSize.z), Config!.GetValue<float>(PanelCloseSpeed), default, null, OnTweenDoneAction);
                 return false;
             }
 
@@ -156,7 +162,7 @@ public class SquishPanels : NeosMod
                     return true;
                 
                 NeosPanel_OnAttach_Patch.PlayCloseSound(__instance);
-                c.Size.TweenTo(new float2(c.Size.Value.x, 0f), TweenSpeed, default, null, OnTweenDoneAction);
+                c.Size.TweenTo(new float2(c.Size.Value.x, 0f), Config!.GetValue<float>(PanelCloseSpeed), default, null, OnTweenDoneAction);
                 return false;
             }
             return true;
