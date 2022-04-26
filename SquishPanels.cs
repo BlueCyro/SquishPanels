@@ -22,8 +22,6 @@ public class SquishPanels : NeosMod
 
     public static float DopplerLevel = 0.0f;
     public static AudioDistanceSpace DistSpace = AudioDistanceSpace.Global;
-    public static string OpenSoundURL = "neosdb:///bbdf36b8f036a5c30f7019d68c1fbdd4032bb1d4c9403bcb926bb21cd0ca3c1a.wav";
-    public static string CloseSoundURL = "neosdb:///e600ed8a6895325613b82a50fd2a8ea2ac64151adc5c48c913d33d584fdf75d5.wav";
     public static float TweenSpeed = 0.22f;
     private static ModConfiguration? Config;
 
@@ -32,6 +30,12 @@ public class SquishPanels : NeosMod
 
     [AutoRegisterConfigKey]
     private static ModConfigurationKey<bool> PlaySoundLocally = new ModConfigurationKey<bool>("PlaySoundLocally", "Makes the sound local for the mod user if true", () => false);
+
+    [AutoRegisterConfigKey]
+    private static ModConfigurationKey<string> OpenSoundURL = new ModConfigurationKey<string>("OpenSoundURL", "The URL of the sound to play when the panel opens", () => "neosdb:///bbdf36b8f036a5c30f7019d68c1fbdd4032bb1d4c9403bcb926bb21cd0ca3c1a.wav");
+
+    [AutoRegisterConfigKey]
+    private static ModConfigurationKey<string> CloseSoundURL = new ModConfigurationKey<string>("CloseSoundURL", "The URL of the sound to play when the panel closes", () => "neosdb:///e600ed8a6895325613b82a50fd2a8ea2ac64151adc5c48c913d33d584fdf75d5.wav");
     public override void OnEngineInit()
     {
         Config = GetConfiguration();
@@ -55,7 +59,7 @@ public class SquishPanels : NeosMod
         }
         public static void PlayOpenSound(NeosPanel __instance)
         {
-            StaticAudioClip clip = __instance.World.GetSharedComponentOrCreate<StaticAudioClip>(OpenSoundURL, a => a.URL.Value = new Uri(OpenSoundURL));
+            StaticAudioClip clip = __instance.World.GetSharedComponentOrCreate<StaticAudioClip>(Config!.GetValue<string>(OpenSoundURL), a => a.URL.Value = new Uri(Config!.GetValue<string>(OpenSoundURL)));
             AudioOutput audio = __instance.World.PlayOneShot(__instance.Slot.GlobalPosition, clip, 1f, true, 1f, __instance.Slot, AudioDistanceSpace.Local, ShouldPlayLocally());
             // UniLog.Log("Playing Open Sound " + (ShouldPlayLocally() ? "Locally" : "Globally").ToString());
             audio.DopplerLevel.Value = DopplerLevel;
@@ -64,7 +68,7 @@ public class SquishPanels : NeosMod
 
         public static void PlayCloseSound(NeosPanel __instance)
         {
-            StaticAudioClip clip = __instance.World.GetSharedComponentOrCreate<StaticAudioClip>(CloseSoundURL, a => a.URL.Value = new Uri(CloseSoundURL));
+            StaticAudioClip clip = __instance.World.GetSharedComponentOrCreate<StaticAudioClip>(Config!.GetValue<string>(CloseSoundURL), a => a.URL.Value = new Uri(Config!.GetValue<string>(CloseSoundURL)));
             AudioOutput audio = __instance.World.PlayOneShot(__instance.Slot.GlobalPosition, clip, 1f, true, 1f, __instance.Slot, AudioDistanceSpace.Local, ShouldPlayLocally());
             // UniLog.Log("Playing Close Sound " + (ShouldPlayLocally() ? "Locally" : "Globally").ToString());
             audio.DopplerLevel.Value = DopplerLevel;
