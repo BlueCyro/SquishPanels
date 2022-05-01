@@ -141,7 +141,12 @@ public class SquishPanels : NeosMod
             if(!Config!.GetValue<bool>(Enabled))
                 return true;
             
-            Action OnTweenDoneAction = delegate() { NeosPanel_OnClose_Snapshot.OnClose(__instance, button); };
+            Action OnTweenDoneAction = () => {
+                if (__instance.World.IsUserspace())
+                    __instance.Slot.Destroy();
+                else
+                    NeosPanel_OnClose_Snapshot.OnClose(__instance, button);
+            };
 
             if (__instance.WhiteList.Count < 1)
             {
